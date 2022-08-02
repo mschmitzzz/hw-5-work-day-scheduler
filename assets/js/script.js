@@ -42,5 +42,49 @@ function fillScheduleEvents() {
     }
   }
 
+  function eventExists(scheduleItem, dayEvent) {
+    for (var i = 0; i < scheduleItem.length; i++) {
+      if (scheduleItem[i].hour === dayEvent.hour) {
+        i = scheduleItem.length;
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  /* When the save button is clicked the item is saved to the local storage */
+  $(".container").on("click", ".saveBtn", function (event) {
+    var target = $(event.currentTarget);
+    var rowItem = target.parent();
+    var dayEvent = {
+      hour: rowItem.children(".hour").text(),
+      event: rowItem.children(".event").val(),
+    };
+  
+    // Checks to make sure the event is not null
+    if (dayEvent.event !== "") {
+      // Checks to make sure that scheduleItem is not empty
+      scheduleItem = JSON.parse(localStorage.getItem("scheduleItem"));
+      if (scheduleItem) {
+        if (scheduleItem.length !== 0) {
+          if (eventExists(scheduleItem, dayEvent)) {
+            for (var i = 0; i < scheduleItem.length; i++) {
+              if (scheduleItem[i].hour === dayEvent.hour) {
+                scheduleItem[i] = dayEvent;
+                i = scheduleItem.length;
+              }
+            }
+          } else {
+            scheduleItem.push(dayEvent);
+          }
+        }
+      } else {
+        scheduleItem = [dayEvent];
+      }
+  
+      localStorage.setItem("scheduleItem", JSON.stringify(scheduleItem));
+    }
+  });
+
   
   init();
