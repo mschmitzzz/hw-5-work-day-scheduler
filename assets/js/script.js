@@ -86,5 +86,32 @@ function fillScheduleEvents() {
     }
   });
 
-  
+    /* When the delete button is clicked the item is removed from the local storage */
+    $(".container").on("click", ".deleteBtn", function (event) {
+        var target = $(event.currentTarget);
+        var rowItem = target.parent();
+        var dayEvent = {
+          hour: rowItem.children(".hour").text(),
+          event: rowItem.children(".event").val(),
+        };
+      
+        // Checks to make sure that scheduleItem is not empty
+        if (scheduleItem.length !== 0) {
+          scheduleItem = JSON.parse(localStorage.getItem("scheduleItem"));
+      
+          if (eventExists(scheduleItem, dayEvent)) {
+            for (var i = 0; i < scheduleItem.length; i++) {
+              if (scheduleItem[i].hour === dayEvent.hour) {
+                scheduleItem.splice(i, 1);
+                rowItem.children(".event").val("");
+                i = scheduleItem.length;
+              }
+            }
+          }
+        }
+      
+        localStorage.setItem("scheduleItem", JSON.stringify(scheduleItem));
+      });
+    
+
   init();
