@@ -4,7 +4,7 @@ var startTime = 7;
 var endTime = 22;
 
 function init() {
-    setToday();
+    setDate();
     createSchedule();
   }
   
@@ -20,12 +20,27 @@ function init() {
           <i class="fa fa-trash col-1 deleteBtn"></i>
         </div>`);
     }
+    fillScheduleEvents();
   }
 
-  function setToday() {
+// sets date at top of page to the current date
+  function setDate() {
     var todDate = now.format("dddd, MMMM Do");
     $("#currentDay").addClass("time-block");
     $("#currentDay").text(todDate);
   }  
+
+  /* Fills the calendar with the applicable events that have been saved for that time span */
+function fillScheduleEvents() {
+    scheduleItem = JSON.parse(localStorage.getItem("scheduleItem"));
+    if (scheduleItem) {
+      scheduleItem.forEach(function (item) {
+        var time = moment(item.hour, "hA").format("H");
+        var idName = "#time" + time;
+        $(idName).val(item.event);
+      });
+    }
+  }
+
   
   init();
