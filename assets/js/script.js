@@ -4,6 +4,7 @@ var startTime = 7;
 var endTime = 22;
 
 function init() {
+    setToday();
     createSchedule();
   }
   
@@ -20,5 +21,11 @@ function init() {
         </div>`);
     }
   }
+
+  function setToday() {
+    var todDate = now.format("dddd, MMMM Do");
+    $("#currentDay").addClass("time-block");
+    $("#currentDay").text(todDate);
+  }  
   
   init();
